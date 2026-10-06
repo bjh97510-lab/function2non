@@ -112,12 +112,15 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', 
 /* ---------------- 상태 ---------------- */
 function randInt(lo, hi) { return lo + Math.floor(Math.random() * (hi - lo + 1)); }
 function makeDrawTargets() {
-  const sets = [[1, -1], [2, -2], [0.5, -0.5]];
-  return sets.map(s => {
+  const sets = [[1, -1], [2, -2]];
+  const targets = sets.map(s => {
     let p, q;
     do { p = randInt(-3, 3); q = randInt(-3, 3); } while (p === 0 && q === 0);
     return { a: s[randInt(0, 1)], p, q };
   });
+  // 세 번째 그리기 문제는 y = (x − 3)² − 3 으로 고정 (분수 계수 없음)
+  targets.push({ a: 1, p: 3, q: -3 });
+  return targets;
 }
 function freshState() {
   return { acorns: 0, completedStep: 0, doneSteps: [], progress: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 }, solved: {}, sub: {}, drawTargets: makeDrawTargets(), current: 1 };
